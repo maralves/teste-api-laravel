@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Jobs\ComentJob;
 use Illuminate\Http\Request;
@@ -16,18 +16,7 @@ class ComentController extends Controller
      */
     public function index()
     {
-        $coments = Coment::all();
-        return view('listAllComents', ['coments' => $coments]);
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function new()
-    {
-        return view('newComent');
+        return Coment::all();
     }
 
     /**
@@ -49,20 +38,7 @@ class ComentController extends Controller
      */
     public function show($id)
     {
-        $coment = Coment::find($id);
-        return view('listComent', ['coment' => $coment]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $coment = Coment::find($id);
-        return view('editComent', ['coment' => $coment]);
+        return Coment::findOrfail($id);
     }
 
     /**
@@ -74,13 +50,11 @@ class ComentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $coment = Coment::find($id);
+        $coment = Coment::findOrfail($id);
 
-        $coment->title = $request->title;
-        $coment->coment = $request->coment;
-        $coment->save();
+        $coment->update($request->all());
 
-        return redirect()->route('coments.list');
+        return $coment;
     }
 
     /**
@@ -91,7 +65,6 @@ class ComentController extends Controller
      */
     public function destroy($id)
     {
-        Coment::destroy($id);
-        return redirect()->route('coments.list', ['msg' => "Comentário Apagado com sucesso!"]);
+        return Coment::destroy($id);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
 
 class PostController extends Controller
@@ -14,7 +14,18 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::all();
+        $posts =  Post::all();
+        return view('listAllPosts', ['posts' => $posts]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function new()
+    {
+        return view('newPost');
     }
 
     /**
@@ -23,9 +34,11 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        return Post::create($request->all());
+        Post::create($request->all());
+
+        return redirect()->route('posts.list');
     }
 
     /**
@@ -36,7 +49,22 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        return Post::findOrfail($id);
+        $post =  Post::find($id);
+
+        return view('listPost', ['post' => $post]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $post =  Post::find($id);
+
+        return view('editPost', ['post' => $post]);
     }
 
     /**
@@ -46,13 +74,15 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostRequest $request, $id)
     {
-        $post = Post::findOrfail($id);
+        $post = Post::find($id);
 
-        $post->update($request->all());
+        $post->title = $request->title;
+        $post->post = $request->post;
+        $post->save();
 
-        return $post;
+        return redirect()->route('posts.list');
     }
 
     /**
@@ -63,6 +93,8 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        return Post::destroy($id);
+        $post =  Post::destroy($id);
+
+        return redirect()->route('posts.list');
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\ComentController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\ComentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
