@@ -14,7 +14,18 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::all();
+        $users = User::all();
+        return view('lisAllUsers', ['users' => $users]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function new()
+    {
+        return view('newUser');
     }
 
     /**
@@ -37,6 +48,19 @@ class UserController extends Controller
     public function show($id)
     {
         return User::findOrfail($id);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $user =  User::find($id);
+
+        return view('editUser', ['user' => $user]);
     }
 
     /**
@@ -63,6 +87,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        return User::destroy($id);
+        $user =  User::destroy($id);
+
+        return redirect()->route('users.list');
     }
 }

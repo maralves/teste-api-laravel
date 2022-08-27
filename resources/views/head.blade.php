@@ -14,6 +14,12 @@
 
     <script src="{{ asset('site/jquery.js') }}"></script>
     <script src="{{ asset('site/bootstrap.js') }}"></script>
+    <div class='container'>
+        <div class="row">
+            @include('menuLateral')
+            @yield('content')
+        </div>
+    </div>
 </body>
 
 </html>
